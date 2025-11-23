@@ -1,5 +1,9 @@
+'use client';
+
 import { PAGES } from '@/configs/pages.config';
+import classNames from 'classnames';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { AiFillBug } from 'react-icons/ai';
 
 const links = [
@@ -8,6 +12,8 @@ const links = [
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
+
   return (
     <nav className='flex flex-row gap-4 justify-between border-b border-zinc-200 p-4 mb-5'>
       <Link href={PAGES.HOME}>
@@ -17,8 +23,12 @@ export default function Navbar() {
         {links.map((link) => (
           <li key={link.name}>
             <Link
-              className='text-zinc-500 hover:text-zinc-800 transition-colors'
-              href={link.href}
+              className={classNames({
+                'text-zinc-900': pathname === link.href,
+                'text-zinc-500': pathname !== link.href,
+                'hover:text-zinc-800 transition-colors duration-200 ease-in-out':
+                  true,
+              })}
             >
               {link.name}
             </Link>
