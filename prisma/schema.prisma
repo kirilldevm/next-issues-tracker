@@ -17,7 +17,7 @@ model Issue {
   updatedAt   DateTime @updatedAt
 }
 
-export enum Status {
+enum Status {
   OPEN
   IN_PROGRESS
   CLOSED

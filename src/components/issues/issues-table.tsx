@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from '../ui/table';
+import IssueStatusBadge from './issue-status-badge';
 
 type Props = {
   issues: TIssue[];
@@ -27,7 +28,7 @@ export default function IssuesTable({ issues }: Props) {
           <TableRow key={issue.id}>
             <TableCell>{issue.title}</TableCell>
             <TableCell className='hidden md:table-cell'>
-              {issue.status}
+              <IssueStatusBadge status={issue.status} />
             </TableCell>
             <TableCell className='hidden md:table-cell'>
               {issue.createdAt.toDateString()}
