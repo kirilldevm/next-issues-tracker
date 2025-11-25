@@ -1,5 +1,7 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
+import Google from 'next-auth/providers/google';
+
 import bcrypt from 'bcryptjs';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -40,5 +42,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return user;
       },
     }),
+    Google,
   ],
 });
