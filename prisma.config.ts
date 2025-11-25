@@ -1,12 +1,8 @@
-import 'dotenv/config'
-import { defineConfig, env } from 'prisma/config'
+// Prisma v7 config file removed/disabled.
+// This project currently uses Prisma v5.3. The `prisma/config` API
+// is not available in Prisma v5. To avoid runtime errors importing
+// 'prisma/config', keep this file empty or delete it.
 
-export default defineConfig({
-  schema: 'prisma/schema.prisma',
-  migrations: {
-    path: 'prisma/migrations',
-  },
-  datasource: {
-    url: env('DATABASE_URL'),
-  },
-})
+// If you later upgrade to Prisma v7, restore a proper `prisma.config.ts`
+// with `import { defineConfig, env } from 'prisma/config'` and datasource
+// configuration.

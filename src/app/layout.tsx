@@ -1,6 +1,4 @@
-// @ts-expect-error - global CSS side-effect import has no type declarations
 import './globals.css';
-// @ts-expect-error - easymde CSS side-effect import has no type declarations
 import 'easymde/dist/easymde.min.css';
 
 import type { Metadata } from 'next';

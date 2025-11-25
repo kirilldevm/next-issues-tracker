@@ -3,11 +3,12 @@
 import { createIssue, updateIssue } from '@/actions/issue';
 import { createIssueSchema, TCreateIssue } from '@/schemas/issue.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Issue } from '@prisma/client';
 import { Callout } from '@radix-ui/themes';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
-import MarkdownEditor from '../shared/mardown-editor';
+import SimpleMDE from 'react-simplemde-editor';
 import Spinner from '../shared/spinner';
 import { Button } from '../ui/button';
 import {
@@ -19,7 +20,6 @@ import {
   FormMessage,
 } from '../ui/form';
 import { Input } from '../ui/input';
-import { Issue } from '@prisma/client';
 
 export default function IssueForm({ issue }: { issue?: Issue }) {
   const isEditing = !!issue;
@@ -95,7 +95,7 @@ export default function IssueForm({ issue }: { issue?: Issue }) {
                   <FormLabel>Description</FormLabel>
                 </span>
                 <FormControl>
-                  <MarkdownEditor
+                  <SimpleMDE
                     value={field.value}
                     onChange={field.onChange}
                     onBlur={field.onBlur}
@@ -109,7 +109,7 @@ export default function IssueForm({ issue }: { issue?: Issue }) {
 
           <div className='flex gap-4 justify-end'>
             <Button type='reset' variant='outline' onClick={() => form.reset()}>
-              Cancel
+              Reset
             </Button>
             <Button type='submit' disabled={pending}>
               {pending ? (

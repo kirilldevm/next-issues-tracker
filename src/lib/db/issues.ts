@@ -6,6 +6,13 @@ export async function getAllIssues() {
   });
 }
 
+export async function getAllIssuesId() {
+  return prisma.issue.findMany({
+    orderBy: { createdAt: 'desc' },
+    select: { id: true },
+  });
+}
+
 export async function getIssueById(id: string) {
   return prisma.issue.findUnique({
     where: { id },
