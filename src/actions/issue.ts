@@ -97,3 +97,37 @@ export async function updateIssue(values: TCreateIssue, id: string) {
     };
   }
 }
+
+export async function deleteIssue(id: string) {
+  try {
+    const issue = await prisma.issue.delete({
+      where: {
+        id,
+      },
+    });
+
+    if (!issue) {
+      return {
+        error: new Error('Failed to delete issue'),
+      };
+    }
+
+    revalidatePath(PAGES.ISSUES);
+
+    return {
+      success: { data: issue },
+    };
+  } catch (error) {
+    console.error(error);
+
+    if (error instanceof Error) {
+      return {
+        error,
+      };
+    }
+
+    return {
+      error: new Error('Failed to delete issue'),
+    };
+  }
+}

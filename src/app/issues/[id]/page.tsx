@@ -20,7 +20,7 @@ export default async function Page({ params }: Props) {
   if (!issue) notFound();
 
   return (
-    <div className='grid md:grid-cols-2 grid-cols-1 gap-5'>
+    <div className='grid md:grid-cols-5 grid-cols-1 grid-rows-[auto_1fr] gap-5'>
       <IssueDetails issue={issue} />
       <IssueDetailsTools issueId={issue.id} />
     </div>
