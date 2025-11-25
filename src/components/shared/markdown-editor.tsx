@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
+import React from 'react';
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
+
+// @ts-expect-error - easymde
+import 'easymde/dist/easymde.min.css';
 
 const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
   ssr: false,

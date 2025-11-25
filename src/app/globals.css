@@ -120,3 +120,42 @@
     @apply bg-background text-foreground;
   }
 }
+
+.CodeMirror {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+  border: 1px solid var(--border) !important;
+  border-top: none !important;
+}
+
+.CodeMirror-cursor {
+  border-left: 1px solid var(--foreground) !important;
+}
+
+.EasyMDEContainer {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+.editor-toolbar {
+  border: 1px solid var(--border) !important;
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+.separator {
+  border: 1px solid var(--border) !important;
+}
+.editor-toolbar button {
+  color: var(--foreground) !important;
+}
+.editor-toolbar button:hover {
+  background-color: var(--background) !important;
+  border: 1px solid var(--border) !important;
+}
+
+.fa-heading {
+  color: var(--foreground) !important;
+  height: 20px !important;
+  width: 20px !important;
+}

@@ -1,9 +1,5 @@
-// @ts-expect-error - radix ui
-import '@radix-ui/themes/styles.css';
 // @ts-expect-error - global CSS side-effect import has no type declarations
 import './globals.css';
-// @ts-expect-error - easymde
-import 'easymde/dist/easymde.min.css';
 
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
@@ -33,8 +29,8 @@ export default function RootLayout({
         <ThemeProvider
           attribute='class'
           defaultTheme='system'
-          enableSystem
-          disableTransitionOnChange
+          // enableSystem
+          // disableTransitionOnChange
         >
           <Navbar />
           <main className='px-4'>{children}</main>

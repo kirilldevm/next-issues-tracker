@@ -8,6 +8,8 @@ import {
   TableRow,
 } from '../ui/table';
 import IssueStatusBadge from './issue-status-badge';
+import Link from 'next/link';
+import { PAGES } from '@/configs/pages.config';
 
 type Props = {
   issues: TIssue[];
@@ -26,7 +28,9 @@ export default function IssuesTable({ issues }: Props) {
       <TableBody>
         {issues.map((issue) => (
           <TableRow key={issue.id}>
-            <TableCell>{issue.title}</TableCell>
+            <TableCell>
+              <Link href={`${PAGES.ISSUES}/${issue.id}`}>{issue.title}</Link>
+            </TableCell>
             <TableCell className='hidden md:table-cell'>
               <IssueStatusBadge status={issue.status} />
             </TableCell>
