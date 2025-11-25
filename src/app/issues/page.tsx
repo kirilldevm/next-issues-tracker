@@ -9,8 +9,8 @@ export default async function IssuesPage() {
   const issues = await getAllIssues();
   await delay(2000);
   return (
-    <div>
-      <Button asChild>
+    <div className='flex flex-col gap-3'>
+      <Button asChild className='self-start'>
         <Link href={PAGES.NEW_ISSUE}>New Issue</Link>
       </Button>
 

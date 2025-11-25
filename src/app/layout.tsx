@@ -1,5 +1,6 @@
 // @ts-expect-error - global CSS side-effect import has no type declarations
 import './globals.css';
+import 'easymde/dist/easymde.min.css';
 
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';

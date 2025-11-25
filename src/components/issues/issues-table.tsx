@@ -29,7 +29,12 @@ export default function IssuesTable({ issues }: Props) {
         {issues.map((issue) => (
           <TableRow key={issue.id}>
             <TableCell>
-              <Link href={`${PAGES.ISSUES}/${issue.id}`}>{issue.title}</Link>
+              <Link
+                href={`${PAGES.ISSUES}/${issue.id}`}
+                className='text-primary hover:underline'
+              >
+                {issue.title}
+              </Link>
             </TableCell>
             <TableCell className='hidden md:table-cell'>
               <IssueStatusBadge status={issue.status} />

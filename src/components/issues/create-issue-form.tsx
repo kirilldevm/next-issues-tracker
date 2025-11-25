@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from '../ui/form';
 import { Input } from '../ui/input';
+import MarkdownEditor from '../shared/mardown-editor';
 
 export default function CreateIssueForm() {
   const [error, setError] = useState<string | null>(null);
@@ -79,7 +80,7 @@ export default function CreateIssueForm() {
                   <FormLabel>Description</FormLabel>
                 </span>
                 <FormControl>
-                  <SimpleMDE
+                  <MarkdownEditor
                     value={field.value}
                     onChange={field.onChange}
                     onBlur={field.onBlur}
