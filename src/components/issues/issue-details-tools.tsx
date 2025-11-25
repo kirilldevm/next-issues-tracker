@@ -38,7 +38,7 @@ export default function IssueDetailsTools({ issueId }: { issueId: string }) {
   }
 
   return (
-    <div className='md:col-start-[5] md:row-start-[1] md:row-span-2'>
+    <div className='md:col-start-5 md:row-start-1 md:row-span-2'>
       <Dialog>
         <div className='flex md:flex-col gap-4'>
           <Button asChild>
