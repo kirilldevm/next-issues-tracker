@@ -4,8 +4,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export default function LoadingIssueDetailPage() {
   return (
-    <div className='grid md:grid-cols-2 grid-cols-1 gap-5'>
-      <div className='col-span-1'>
+    <div className='grid md:grid-cols-5 grid-cols-1 gap-5'>
+      <div className='md:col-span-4'>
         <Skeleton className='h-10 w-1/2' />
 
         <div className='flex gap-3 my-3'>
@@ -29,7 +29,7 @@ export default function LoadingIssueDetailPage() {
         </Card>
       </div>
 
-      <div className='col-span-1'>
+      <div className='col-span-1 flex gap-3 md:flex-col'>
         <Button asChild>
           <Skeleton className='h-8 w-22' />
         </Button>

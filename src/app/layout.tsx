@@ -27,16 +27,18 @@ export default function RootLayout({
   return (
     <html lang='en' className={inter.variable} suppressHydrationWarning>
       <body className={`antialiased`}>
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='system'
-          // enableSystem
-          // disableTransitionOnChange
-        >
-          <Toaster richColors position='bottom-right' />
-          <Navbar />
-          <main className='px-4 md:px-6 xl:py-8'>{children}</main>
-        </ThemeProvider>
+        <div className='flex flex-col h-screen'>
+          <ThemeProvider
+            attribute='class'
+            defaultTheme='system'
+            // enableSystem
+            // disableTransitionOnChange
+          >
+            <Toaster richColors position='bottom-right' />
+            <Navbar />
+            <main className='px-4 md:px-6 xl:px-8 flex-1 py-6'>{children}</main>
+          </ThemeProvider>
+        </div>
       </body>
     </html>
   );

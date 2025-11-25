@@ -16,7 +16,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className='flex flex-row gap-4 justify-between border-b border-border py-4 px-4 md:px-6 xl:py-8 mb-5'>
+    <nav className='flex flex-row gap-4 justify-between border-b border-border py-4 px-4 md:px-6 xl:px-8'>
       <Link href={PAGES.HOME}>
         <AiFillBug size={32} />
       </Link>
