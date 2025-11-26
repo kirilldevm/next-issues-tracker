@@ -1,19 +1,35 @@
+import IssueActions from '@/components/issues/issue-actions';
 import IssuesTable from '@/components/issues/issues-table';
-import { Button } from '@/components/ui/button';
-import { PAGES } from '@/configs/pages.config';
+import { SORTABLE_FIELDS } from '@/configs/issues.config';
 import { getAllIssues } from '@/lib/db/issues';
-import delay from 'delay';
-import Link from 'next/link';
+import { Issue, Status } from '@prisma/client';
 
-export default async function IssuesPage() {
-  const issues = await getAllIssues();
-  await delay(2000);
+type Props = {
+  searchParams: Promise<{
+    status: Status;
+    order: 'asc' | 'desc';
+    sort: keyof Issue;
+  }>;
+};
+
+export default async function IssuesPage({ searchParams }: Props) {
+  const statuses = Object.values(Status);
+
+  const sort = (await searchParams).sort;
+  const order = (await searchParams).order;
+  const status = (await searchParams).status;
+
+  const sortBy = SORTABLE_FIELDS.includes(sort) ? sort : 'createdAt';
+  const orderDirection = order === 'asc' ? 'asc' : 'desc';
+
+  const issues = await getAllIssues({
+    where: { status: statuses.includes(status) ? status : undefined },
+    orderBy: { [sortBy]: orderDirection },
+  });
+
   return (
     <div className='flex flex-col gap-3'>
-      <Button asChild className='self-start'>
-        <Link href={PAGES.NEW_ISSUE}>New Issue</Link>
-      </Button>
-
+      <IssueActions />
       <IssuesTable issues={issues} />
     </div>
   );

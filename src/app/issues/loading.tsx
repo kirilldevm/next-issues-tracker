@@ -1,22 +1,18 @@
-import { Button } from '@/components/ui/button';
+import IssueActions from '@/components/issues/issue-actions';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
+  Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-  Table,
 } from '@/components/ui/table';
-import { PAGES } from '@/configs/pages.config';
-import Link from 'next/link';
 
 export default function IssuesLoading() {
   return (
     <div className='flex flex-col gap-3'>
-      <Button asChild className='self-start'>
-        <Link href={PAGES.NEW_ISSUE}>New Issue</Link>
-      </Button>
+      <IssueActions />
 
       <Table>
         <TableHeader className='bg-card'>

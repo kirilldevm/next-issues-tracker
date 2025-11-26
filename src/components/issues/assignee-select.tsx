@@ -11,6 +11,7 @@ import {
 import { api } from '@/lib/api';
 import { PAGES } from '@/configs/pages.config';
 import { Issue } from '@prisma/client';
+import { toast } from 'sonner';
 
 export default function AssigneeSelect({ issue }: { issue: Issue }) {
   const { data: users, isPending, error } = useUsers();
@@ -20,10 +21,15 @@ export default function AssigneeSelect({ issue }: { issue: Issue }) {
   if (error) return null;
 
   async function handleAssignUser(userId: string) {
-    const assignedToUserId = userId === 'none' ? null : userId;
-    await api.patch(`${PAGES.ISSUES}/${issueId}`, {
-      assignedToUserId,
-    });
+    try {
+      const assignedToUserId = userId === 'none' ? null : userId;
+      await api.patch(`${PAGES.ISSUES}/${issueId}`, {
+        assignedToUserId,
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to assign user');
+    }
   }
 
   return (
@@ -31,7 +37,7 @@ export default function AssigneeSelect({ issue }: { issue: Issue }) {
       onValueChange={handleAssignUser}
       defaultValue={assignedToUserId || 'none'}
     >
-      <SelectTrigger className='w-[180px]'>
+      <SelectTrigger className='flex-1 w-full'>
         <SelectValue placeholder='Select an user' />
       </SelectTrigger>
       <SelectContent>

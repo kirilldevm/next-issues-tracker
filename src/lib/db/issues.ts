@@ -1,8 +1,8 @@
 import { prisma } from '../prisma';
 
-export async function getAllIssues() {
+export async function getAllIssues(query?: any) {
   return prisma.issue.findMany({
-    orderBy: { createdAt: 'desc' },
+    ...query,
   });
 }
 
