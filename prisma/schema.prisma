@@ -17,7 +17,8 @@ model User {
   image          String?
   accounts       Account[]
   sessions       Session[]
-  issues         Issue[]
+  issues         Issue[]         @relation("createdIssues")
+  assignedIssues Issue[]         @relation("assignedIssues")
   Authenticator  Authenticator[]
 
   createdAt DateTime @default(now())
@@ -25,23 +26,23 @@ model User {
 }
 
 model Account {
-  id                String   @id @default(cuid())
+  id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String?  @db.Text
-  access_token      String?  @db.Text
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String?  @db.Text
+  id_token          String? @db.Text
   session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -79,15 +80,17 @@ model Authenticator {
 }
 
 model Issue {
-  id          String   @id @default(uuid())
-  title       String   @db.VarChar(255)
-  description String   @db.Text
-  status      Status   @default(OPEN)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  userId      String
+  id               String   @id @default(uuid())
+  title            String   @db.VarChar(255)
+  description      String   @db.Text
+  status           Status   @default(OPEN)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  userId           String
+  assignedToUserId String?
 
-  user User @relation(fields: [userId], references: [id])
+  assignedToUser User? @relation("assignedIssues", fields: [assignedToUserId], references: [id])
+  user           User  @relation("createdIssues", fields: [userId], references: [id])
 
   @@index([userId])
 }

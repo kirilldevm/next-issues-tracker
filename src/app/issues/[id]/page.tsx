@@ -1,3 +1,4 @@
+import { auth } from '@/auth';
 import IssueDetails from '@/components/issues/issue-details';
 import IssueDetailsTools from '@/components/issues/issue-details-tools';
 import { getAllIssuesId, getIssueById } from '@/lib/db/issues';
@@ -14,6 +15,7 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params }: Props) {
+  const session = await auth();
   const { id } = await params;
   const issue = await getIssueById(id);
 
@@ -22,7 +24,7 @@ export default async function Page({ params }: Props) {
   return (
     <div className='grid md:grid-cols-5 grid-cols-1 grid-rows-[auto_1fr] gap-5'>
       <IssueDetails issue={issue} />
-      <IssueDetailsTools issueId={issue.id} />
+      {session?.user.id === issue.userId && <IssueDetailsTools issue={issue} />}
     </div>
   );
 }

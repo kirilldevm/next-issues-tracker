@@ -17,3 +17,10 @@ export async function getAccountById(id: string) {
     where: { userId: id },
   });
 }
+
+export async function getAllUsers() {
+  return prisma.user.findMany({
+    orderBy: { name: 'asc' },
+    select: { id: true, name: true, email: true },
+  });
+}

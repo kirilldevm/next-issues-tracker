@@ -33,7 +33,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className='border-b border-border py-4 px-4 md:px-6 xl:px-8'>
+    <nav className='border-b border-border py-4'>
       <div className='container flex flex-row gap-4 justify-between mx-auto'>
         <Link href={PAGES.HOME}>
           <AiFillBug size={32} />

@@ -2,7 +2,11 @@
 
 import { PAGES } from '@/configs/pages.config';
 import { prisma } from '@/lib/prisma';
-import { createIssueSchema, TCreateIssue } from '@/schemas/issue.schema';
+import {
+  createIssueSchema,
+  TCreateIssue,
+  updateIssueSchema,
+} from '@/schemas/issue.schema';
 import { revalidatePath } from 'next/cache';
 
 export async function createIssue({
@@ -67,7 +71,7 @@ export async function updateIssue({
   userId: string;
 }) {
   try {
-    const validated = createIssueSchema.safeParse(values);
+    const validated = updateIssueSchema.safeParse(values);
 
     if (!validated.success) {
       return {
@@ -75,7 +79,21 @@ export async function updateIssue({
       };
     }
 
-    const { title, description } = validated.data;
+    const { title, description, assignedToUserId, status } = validated.data;
+
+    if (assignedToUserId) {
+      const assignedToUser = await prisma.user.findUnique({
+        where: {
+          id: assignedToUserId,
+        },
+      });
+
+      if (!assignedToUser) {
+        return {
+          error: new Error('User not found'),
+        };
+      }
+    }
 
     const issueExists = await prisma.issue.findUnique({
       where: {
@@ -96,6 +114,8 @@ export async function updateIssue({
       data: {
         title,
         description,
+        assignedToUserId,
+        status,
       },
     });
 

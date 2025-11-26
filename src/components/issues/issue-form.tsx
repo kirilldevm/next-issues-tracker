@@ -50,7 +50,7 @@ export default function IssueForm({ issue }: { issue?: Issue }) {
         }).then((res) => {
           if (res.error) {
             setError(res.error.message);
-          } else {
+          } else if (res.success) {
             router.push(`/issues/${res.success.data.id}`);
           }
         });
@@ -59,7 +59,7 @@ export default function IssueForm({ issue }: { issue?: Issue }) {
           if (res.error) {
             setError(res.error.message);
             toast.error(res.error.message);
-          } else {
+          } else if (res.success) {
             router.push(`/issues/${res.success.data.id}`);
           }
         });

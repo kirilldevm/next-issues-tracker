@@ -1,4 +1,3 @@
-import { TIssue } from '@/schemas';
 import {
   Table,
   TableBody,
@@ -10,9 +9,10 @@ import {
 import IssueStatusBadge from './issue-status-badge';
 import Link from 'next/link';
 import { PAGES } from '@/configs/pages.config';
+import { Issue } from '@prisma/client';
 
 type Props = {
-  issues: TIssue[];
+  issues: Issue[];
 };
 
 export default function IssuesTable({ issues }: Props) {
