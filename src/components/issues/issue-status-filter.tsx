@@ -30,8 +30,12 @@ export default function IssueStatusFilter() {
     : searchParams.get('status') || 'ALL';
 
   function handleChangeStatus(stat: (typeof statuses)[number]['value']) {
-    const query = stat === 'ALL' ? '' : '?status=' + stat;
-    router.push(`${pathname}${query}`);
+    const params = new URLSearchParams(searchParams.toString());
+    if (stat === 'ALL') params.delete('status');
+    else params.set('status', stat);
+    // const query = stat === 'ALL' ? '' : '?status=' + stat;
+    // router.push(`${pathname}${query}`);
+    router.push(`${pathname}?${params.toString()}`);
   }
 
   return (
