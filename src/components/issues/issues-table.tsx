@@ -52,7 +52,7 @@ export default function IssuesTable({ issues }: Props) {
 
   return (
     <Table className=''>
-      <TableHeader className='bg-card border-x'>
+      <TableHeader className='bg-card'>
         <TableRow className=''>
           {columns.map((column) => {
             const isActive = currentSort === column.value;
@@ -79,7 +79,7 @@ export default function IssuesTable({ issues }: Props) {
           })}
         </TableRow>
       </TableHeader>
-      <TableBody className='border border-collapse'>
+      <TableBody className=''>
         {issues.map((issue) => (
           <TableRow key={issue.id}>
             <TableCell>
