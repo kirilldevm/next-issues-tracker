@@ -1,12 +1,9 @@
-export const PAGES = {
-  HOME: '/',
-
+export const ROUTES = {
   DASHBOARD: '/dashboard',
-
   SIGN_IN: '/signin',
   REGISTER: '/register',
-
   ISSUES: '/issues',
   NEW_ISSUE: '/issues/new',
-  EDIT_ISSUE: '/issues/edit',
+  ISSUE: '/issues/:id',
+  EDIT_ISSUE: '/issues/edit/:id',
 };

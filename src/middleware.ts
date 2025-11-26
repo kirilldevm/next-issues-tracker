@@ -7,6 +7,7 @@ import {
   publicRoutes,
 } from './routes';
 import { NextResponse } from 'next/server';
+import { PAGES } from './configs/pages.config';
 
 const { auth } = NextAuth(authConfig);
 
@@ -41,7 +42,7 @@ export const middleware = auth(async (req) => {
     const encodedCallbackUrl = encodeURIComponent(callbackUrl);
 
     return NextResponse.redirect(
-      new URL(`/login?callbackUrl=${encodedCallbackUrl}`, nextUrl)
+      new URL(`${PAGES.SIGN_IN}?callbackUrl=${encodedCallbackUrl}`, nextUrl)
     );
   }
 

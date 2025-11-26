@@ -46,7 +46,7 @@ export default function IssueDetailsTools({ issueId }: { issueId: string }) {
       <Dialog>
         <div className='flex md:flex-col gap-4'>
           <Button asChild>
-            <Link href={`${PAGES.ISSUES}/${issueId}/edit`}>
+            <Link href={`${PAGES.EDIT_ISSUE}/${issueId}`}>
               <Pencil2Icon />
               Edit Issue
             </Link>
