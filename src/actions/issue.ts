@@ -154,6 +154,18 @@ export async function deleteIssue({
   userId: string;
 }) {
   try {
+    const issueExists = await prisma.issue.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!issueExists || issueExists.userId !== userId) {
+      return {
+        error: new Error('You are not authorized to delete this issue'),
+      };
+    }
+
     const issue = await prisma.issue.delete({
       where: {
         id,

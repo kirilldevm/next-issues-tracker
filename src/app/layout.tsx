@@ -9,6 +9,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 import AuthProvider from '@/providers/auth-provider';
 import QueryProvider from '@/providers/query-provider';
+import { Suspense } from 'react';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -34,15 +35,17 @@ export default function RootLayout({
       <body className={`antialiased`}>
         <div className='flex flex-col h-screen'>
           <AuthProvider>
-            <QueryProvider>
-              <ThemeProvider attribute='class' defaultTheme='system'>
-                <Toaster richColors position='bottom-right' />
-                <Navbar />
-                <main className='container mx-auto flex-1 py-6'>
-                  {children}
-                </main>
-              </ThemeProvider>
-            </QueryProvider>
+            <Suspense>
+              <QueryProvider>
+                <ThemeProvider attribute='class' defaultTheme='system'>
+                  <Toaster richColors position='bottom-right' />
+                  <Navbar />
+                  <main className='container mx-auto flex-1 py-6'>
+                    {children}
+                  </main>
+                </ThemeProvider>
+              </QueryProvider>
+            </Suspense>
           </AuthProvider>
         </div>
       </body>

@@ -171,6 +171,6 @@
 }
 
 .CodeMirror-selectedtext {
-  background-color: var(--muted/20) !important;
+  background-color: var(--muted) !important;
   color: var(--primary) !important;
 }

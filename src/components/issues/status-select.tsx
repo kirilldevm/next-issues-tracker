@@ -1,8 +1,8 @@
 'use client';
 
-import { PAGES } from '@/configs/pages.config';
-import { api } from '@/lib/api';
+import { updateIssue } from '@/actions/issue';
 import { Issue, Status } from '@prisma/client';
+import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 import {
   Select,
@@ -11,9 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
-import { revalidatePath } from 'next/cache';
-import { useSession } from 'next-auth/react';
-import { updateIssue } from '@/actions/issue';
 
 const statuses = Object.values(Status);
 

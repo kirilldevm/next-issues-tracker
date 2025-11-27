@@ -1,10 +1,7 @@
 'use client';
-
-import { PAGES } from '@/configs/pages.config';
 import { Issue } from '@prisma/client';
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
 import {
   Table,
   TableBody,
@@ -14,88 +11,63 @@ import {
   TableRow,
 } from '../ui/table';
 import IssueStatusBadge from './issue-status-badge';
+import { IssueQuery } from '@/app/issues/page';
+
 type Props = {
   issues: Issue[];
+  searchParams: IssueQuery;
 };
 
-const columns: { label: string; value: keyof Issue; classname?: string }[] = [
-  { label: 'Issue', value: 'title' },
-  { label: 'Status', value: 'status', classname: 'hidden md:table-cell' },
-  { label: 'Created', value: 'createdAt', classname: 'hidden md:table-cell' },
+const columns = [
+  { label: 'Issue', value: 'title' as keyof Issue },
+  { label: 'Status', value: 'status' as keyof Issue },
+  { label: 'Created', value: 'createdAt' as keyof Issue },
 ];
 
-export default function IssuesTable({ issues }: Props) {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-
-  const currentSort = (searchParams.get('sort') as keyof Issue) || 'createdAt';
-  const currentOrder = searchParams.get('order') === 'desc' ? 'desc' : 'asc';
-
-  function paramsToObject(params: URLSearchParams) {
-    return Object.fromEntries(params.entries());
-  }
-
-  function createQueryString(column: keyof Issue) {
-    const params = paramsToObject(searchParams);
-
-    const nextOrder =
-      currentSort === column && currentOrder === 'asc' ? 'desc' : 'asc';
-
-    return {
-      query: {
-        ...params,
-        sort: column,
-        order: nextOrder,
-      },
-    };
-  }
+export default function IssuesTable({ issues, searchParams }: Props) {
+  const currentSort = searchParams?.sort;
+  const currentOrder = searchParams?.order;
 
   return (
-    <Table className=''>
-      <TableHeader className='bg-card'>
-        <TableRow className=''>
-          {columns.map((column) => {
-            const isActive = currentSort === column.value;
-            return (
-              <TableHead key={column.value} className={column.classname}>
-                <Link
-                  href={{
-                    pathname,
-                    ...createQueryString(column.value),
-                  }}
-                  className='flex items-center gap-1 cursor-pointer'
-                >
-                  {column.label}
-                  {!isActive && <ArrowUpDown className='h-4' />}
-                  {isActive && currentOrder === 'asc' && (
-                    <ArrowUp className='h-4' />
-                  )}
-                  {isActive && currentOrder === 'desc' && (
-                    <ArrowDown className='h-4' />
-                  )}
-                </Link>
-              </TableHead>
-            );
-          })}
+    <Table>
+      <TableHeader>
+        <TableRow>
+          {columns.map((col) => (
+            <TableHead key={col.value}>
+              <Link
+                href={{
+                  pathname: '/issues',
+                  query: {
+                    ...searchParams,
+                    sort: col.value,
+                    order: currentOrder === 'asc' ? 'desc' : 'asc',
+                  },
+                }}
+                className='flex items-center gap-1'
+              >
+                {col.label}
+                {!currentSort || currentSort !== col.value ? (
+                  <ArrowUpDown className='h-4' />
+                ) : null}
+                {currentSort === col.value && currentOrder === 'asc' && (
+                  <ArrowUp className='h-4' />
+                )}
+                {currentSort === col.value && currentOrder === 'desc' && (
+                  <ArrowDown className='h-4' />
+                )}
+              </Link>
+            </TableHead>
+          ))}
         </TableRow>
       </TableHeader>
-      <TableBody className=''>
+      <TableBody>
         {issues.map((issue) => (
           <TableRow key={issue.id}>
+            <TableCell>{issue.title}</TableCell>
             <TableCell>
-              <Link
-                href={`${PAGES.ISSUES}/${issue.id}`}
-                className='text-primary hover:underline'
-              >
-                {issue.title}
-              </Link>
-            </TableCell>
-            <TableCell className='hidden md:table-cell'>
               <IssueStatusBadge status={issue.status} />
             </TableCell>
-            <TableCell className='hidden md:table-cell'>
-              {issue.createdAt.toDateString()}
-            </TableCell>
+            <TableCell>{issue.createdAt.toDateString()}</TableCell>
           </TableRow>
         ))}
       </TableBody>
