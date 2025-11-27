@@ -38,7 +38,7 @@ export async function createIssue({
 
     if (!issue) {
       return {
-        error: new Error('Failed to create issue'),
+        error: 'Failed to create issue',
       };
     }
 
@@ -48,16 +48,14 @@ export async function createIssue({
       success: { data: issue },
     };
   } catch (error) {
-    console.error(error);
-
     if (error instanceof Error) {
       return {
-        error,
+        error: error.message,
       };
     }
 
     return {
-      error: new Error('Failed to create issue'),
+      error: 'Failed to create issue',
     };
   }
 }
@@ -91,7 +89,7 @@ export async function updateIssue({
 
       if (!assignedToUser) {
         return {
-          error: new Error('User not found'),
+          error: 'User does not exist',
         };
       }
     }
@@ -104,7 +102,7 @@ export async function updateIssue({
 
     if (!issueExists || issueExists.userId !== userId) {
       return {
-        error: new Error('You are not authorized to update this issue'),
+        error: 'You are not authorized to update this issue',
       };
     }
 
@@ -122,7 +120,7 @@ export async function updateIssue({
 
     if (!issue) {
       return {
-        error: new Error('Failed to update issue'),
+        error: 'Failed to update issue',
       };
     }
 
@@ -136,12 +134,12 @@ export async function updateIssue({
 
     if (error instanceof Error) {
       return {
-        error,
+        error: error.message,
       };
     }
 
     return {
-      error: new Error('Failed to update issue'),
+      error: 'Failed to update issue',
     };
   }
 }
@@ -162,7 +160,7 @@ export async function deleteIssue({
 
     if (!issueExists || issueExists.userId !== userId) {
       return {
-        error: new Error('You are not authorized to delete this issue'),
+        error: 'You are not authorized to delete this issue',
       };
     }
 
@@ -174,7 +172,7 @@ export async function deleteIssue({
 
     if (!issue) {
       return {
-        error: new Error('Failed to delete issue'),
+        error: 'Failed to delete issue',
       };
     }
 
@@ -193,7 +191,7 @@ export async function deleteIssue({
     }
 
     return {
-      error: new Error('Failed to delete issue'),
+      error: 'Failed to delete issue',
     };
   }
 }

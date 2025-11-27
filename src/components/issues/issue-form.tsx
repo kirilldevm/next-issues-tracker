@@ -54,7 +54,7 @@ export default function IssueForm({ issue }: { issue?: Issue }) {
           userId: session!.user.id,
         }).then((res) => {
           if (res.error) {
-            setError(res.error.message);
+            setError(res.error);
           } else if (res.success) {
             router.push(`/issues/${res.success.data.id}`);
           }
@@ -62,8 +62,8 @@ export default function IssueForm({ issue }: { issue?: Issue }) {
       } else {
         createIssue({ values: data, userId: session!.user.id }).then((res) => {
           if (res.error) {
-            setError(res.error.message);
-            toast.error(res.error.message);
+            setError(res.error);
+            toast.error(res.error);
           } else if (res.success) {
             router.push(`/issues/${res.success.data.id}`);
           }
