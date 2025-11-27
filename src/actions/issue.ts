@@ -186,7 +186,7 @@ export async function deleteIssue({
 
     if (error instanceof Error) {
       return {
-        error,
+        error: error.message,
       };
     }
 

@@ -39,8 +39,7 @@ export default function IssueDetailsTools({ issue }: Props) {
       await deleteIssue({ id: issueId, userId: session!.user.id }).then(
         (res) => {
           if (res.error) {
-            console.error(res.error.message);
-            toast.error(res.error.message);
+            toast.error(res.error);
           } else {
             toast.success('Issue deleted successfully');
             router.push(PAGES.ISSUES);
