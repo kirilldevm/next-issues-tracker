@@ -1,6 +1,10 @@
+import { Prisma } from '@prisma/client';
 import { prisma } from '../prisma';
+import { DefaultArgs } from '@prisma/client/runtime/library';
 
-export async function getAllIssues(query?: any) {
+export async function getAllIssues(
+  query?: Prisma.IssueFindManyArgs<DefaultArgs>
+) {
   return prisma.issue.findMany({
     ...query,
   });
