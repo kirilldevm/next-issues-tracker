@@ -13,7 +13,7 @@ export default async function LatestIssues() {
     include: { assignedToUser: true },
   });
 
-  console.log(latestIssues);
+  if (latestIssues.length === 0) return null;
 
   return (
     <Card>
