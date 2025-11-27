@@ -55,7 +55,7 @@ export default function AssigneeSelect({ issue }: { issue: Issue }) {
         <SelectItem value={'none'}>None</SelectItem>
         {users?.map((user) => (
           <SelectItem key={user.id} value={user.id}>
-            {user.name}
+            {user.name || user.email}
           </SelectItem>
         ))}
       </SelectContent>

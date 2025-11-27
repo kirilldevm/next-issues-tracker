@@ -13,33 +13,37 @@ export default {
       clientSecret: process.env.GOOGLE_SECRET,
     }),
     Credentials({
+      id: 'credentials',
+      name: 'Credentials',
+      credentials: {
+        email: {},
+        password: {},
+      },
       async authorize(credentials) {
-        const validatedValues = loginSchema.safeParse(credentials!);
-        if (!validatedValues.success) {
-          return null;
-        }
+        const validatedValues = loginSchema.safeParse(credentials);
+        if (!validatedValues.success) return null;
+
         const { email, password } = validatedValues.data;
+
         const user = await getUserByEmail(email);
-        if (!user || !user.hashedPassword) {
-          return null;
-        }
-        const passwordsMatch = await bcrypt.compare(
-          password,
-          user.hashedPassword
-        );
+        if (!user || !user.hashedPassword) return null;
+
+        const ok = await bcrypt.compare(password, user.hashedPassword);
+        if (!ok) return null;
+
         const isOAuth = await prisma.account.findFirst({
-          where: {
-            userId: user.id,
-          },
+          where: { userId: user.id },
         });
-        if (passwordsMatch) {
-          return {
-            ...user,
-            isOAuth: !!isOAuth,
-            noPassword: false,
-          };
-        }
-        return null;
+
+        // IMPORTANT: return only safe fields!
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          image: user.image,
+          isOAuth: !!isOAuth,
+          noPassword: false,
+        };
       },
     }),
   ],

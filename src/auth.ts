@@ -5,8 +5,9 @@ import { getAccountById, getUserById } from './lib/db/user';
 import { prisma } from './lib/prisma';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  ...authConfig,
   adapter: FixedPrismaAdapter(prisma),
-  pages: { signIn: '/login', error: '/error' },
+  pages: { signIn: '/signin', error: '/signin' },
   session: {
     strategy: 'jwt',
   },
@@ -16,7 +17,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       const existingUser = await getUserById(user.id!);
 
-      if (!existingUser || !existingUser.emailVerified) return false;
+      if (!existingUser) return false;
 
       return true;
     },
@@ -53,5 +54,4 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
   },
-  ...authConfig,
 });

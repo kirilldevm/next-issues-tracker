@@ -1,6 +1,6 @@
 'use client';
 
-import { signInAction } from '@/actions/auth';
+import { signUpAction } from '@/actions/auth';
 import {
   Card,
   CardContent,
@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/form';
 import { PAGES } from '@/configs/pages.config';
 import { SOCIALS } from '@/configs/socials.config';
-import { loginSchema, TLoginSchema } from '@/schemas';
+import { registerSchema, TRegisterSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
 import { useState, useTransition } from 'react';
@@ -28,21 +28,22 @@ import Error from '../shared/error';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 
-export default function SigninForm() {
+export default function SignupForm() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
-  const form = useForm<TLoginSchema>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<TRegisterSchema>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       email: '',
       password: '',
+      confirmPassword: '',
     },
   });
 
-  function handleSubmit(data: TLoginSchema) {
+  function handleSubmit(data: TRegisterSchema) {
     startTransition(async () => {
       setError(null);
-      await signInAction(data).then((res) => {
+      await signUpAction(data).then((res) => {
         if (res?.error) {
           setError(res.error);
           console.error(res.error);
@@ -59,8 +60,8 @@ export default function SigninForm() {
   return (
     <Card className='min-w-sm w-auto border-none'>
       <CardHeader>
-        <CardTitle>Sign in</CardTitle>
-        <CardDescription>Sign in to your account</CardDescription>
+        <CardTitle>Sign Up</CardTitle>
+        <CardDescription>Create your account</CardDescription>
       </CardHeader>
       <CardContent>
         <form
@@ -84,6 +85,19 @@ export default function SigninForm() {
             <FormField
               control={form.control}
               name='password'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Password' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='confirmPassword'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>

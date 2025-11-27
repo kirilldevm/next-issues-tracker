@@ -15,6 +15,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
+import { useEffect } from 'react';
 
 const links = [
   { name: 'Home', href: PAGES.HOME },
@@ -23,13 +24,17 @@ const links = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { status, data: session } = useSession();
+  const { status, data: session, update } = useSession();
 
   async function handleGetOut() {
     await signOut({
       redirectTo: PAGES.SIGN_IN,
     });
   }
+
+  useEffect(() => {
+    update();
+  }, [pathname]);
 
   return (
     <nav className='border-b border-border py-4'>
@@ -58,12 +63,21 @@ export default function Navbar() {
           </ul>
 
           {status === 'unauthenticated' && (
-            <Link
-              href={PAGES.SIGN_IN}
-              className='text-primary hover:text-primary/80'
-            >
-              Sign In
-            </Link>
+            <div className='flex gap-2'>
+              <Link
+                href={PAGES.SIGN_IN}
+                className='text-primary hover:text-primary/80'
+              >
+                Sign In
+              </Link>
+              <span>/</span>
+              <Link
+                href={PAGES.SIGN_UP}
+                className='text-primary hover:text-primary/80'
+              >
+                Sign Up
+              </Link>
+            </div>
           )}
 
           {status === 'authenticated' && (

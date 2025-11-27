@@ -5,14 +5,14 @@ import { PAGES } from './configs/pages.config';
  * These routes don't require authentication
  * @type {string[]}
  */
-export const publicRoutes = [PAGES.DASHBOARD, PAGES.ISSUES, PAGES.HOME];
+export const publicRoutes = [PAGES.HOME, PAGES.ISSUES, PAGES.HOME];
 
 /**
  * An Array of routes that are used for authentication
  * These routes will redirect logged in users to the default login redirect
  * @type {string[]}
  */
-export const authRoutes = [PAGES.SIGN_IN, PAGES.REGISTER];
+export const authRoutes = [PAGES.SIGN_IN, PAGES.SIGN_UP];
 
 /**
  * The prefix for API auth routes

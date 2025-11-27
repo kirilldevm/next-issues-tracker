@@ -6,10 +6,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Issue } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import SimpleMDE from 'react-simplemde-editor';
 import { toast } from 'sonner';
+import Error from '../shared/error';
 import Spinner from '../shared/spinner';
 import { Button } from '../ui/button';
 import {
@@ -71,11 +72,7 @@ export default function IssueForm({ issue }: { issue?: Issue }) {
 
   return (
     <div className='max-w-4xl'>
-      {error && (
-        <p className='text-primary-foreground bg-destructive px-4 py-2 rounded mb-3'>
-          {error}
-        </p>
-      )}
+      {error && <Error error={error} />}
 
       <Form {...form}>
         <form className='space-y-3 ' onSubmit={form.handleSubmit(onSubmit)}>

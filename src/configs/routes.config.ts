@@ -1,7 +1,7 @@
 export const ROUTES = {
   DASHBOARD: '/dashboard',
   SIGN_IN: '/signin',
-  REGISTER: '/register',
+  SVGAElement: '/signup',
   ISSUES: '/issues',
   NEW_ISSUE: '/issues/new',
   ISSUE: '/issues/:id',

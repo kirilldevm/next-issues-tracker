@@ -1,10 +1,8 @@
 export const PAGES = {
   HOME: '/',
 
-  DASHBOARD: '/dashboard',
-
   SIGN_IN: '/signin',
-  REGISTER: '/register',
+  SIGN_UP: '/signup',
 
   ISSUES: '/issues',
   NEW_ISSUE: '/issues/new',
