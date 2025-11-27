@@ -22,7 +22,7 @@ export async function createIssue({
 
     if (!validated.success) {
       return {
-        error: validated.error?.message || 'Invalid credentials',
+        error: 'Invalid credentials',
       };
     }
 
@@ -76,7 +76,7 @@ export async function updateIssue({
 
     if (!validated.success) {
       return {
-        error: validated.error?.message || 'Invalid credentials',
+        error: 'Invalid credentials',
       };
     }
 

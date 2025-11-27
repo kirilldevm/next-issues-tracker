@@ -25,7 +25,7 @@ export async function PATCH(
 
   if (!validated.success) {
     return NextResponse.json(
-      { message: validated.error.message },
+      { message: 'Invalid credentials' },
       { status: 400 }
     );
   }

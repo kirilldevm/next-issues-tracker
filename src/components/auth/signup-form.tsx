@@ -46,7 +46,6 @@ export default function SignupForm() {
       await signUpAction(data).then((res) => {
         if (res?.error) {
           setError(res.error);
-          console.error(res.error);
           toast.error(res.error);
         }
       });

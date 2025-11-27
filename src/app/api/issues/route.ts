@@ -17,7 +17,7 @@ export async function POST(request: Request) {
   const validated = createIssueSchema.safeParse(body);
 
   if (!validated.success) {
-    return new Response(JSON.stringify(validated.error.message), {
+    return new Response(JSON.stringify({ message: 'Invalid credentials' }), {
       status: 400,
     });
   }
