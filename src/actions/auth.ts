@@ -16,7 +16,7 @@ export async function signInAction(data: TLoginSchema) {
 
   if (!validatedValues.success) {
     return {
-      error: validatedValues.error,
+      error: validatedValues.error?.message || 'Invalid credentials',
     };
   }
 
@@ -58,7 +58,7 @@ export async function signUpAction(data: TRegisterSchema) {
 
   if (!validatedValues.success) {
     return {
-      error: validatedValues.error,
+      error: validatedValues.error?.message || 'Invalid credentials',
     };
   }
 
