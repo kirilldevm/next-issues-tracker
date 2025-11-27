@@ -1,12 +1,3 @@
-/*
-  Warnings:
-
-  - Added the required column `userId` to the `Issue` table without a default value. This is not possible if the table is not empty.
-
-*/
--- AlterTable
-ALTER TABLE `issue` ADD COLUMN `userId` VARCHAR(191) NOT NULL;
-
 -- CreateTable
 CREATE TABLE `User` (
     `id` VARCHAR(191) NOT NULL,
@@ -14,6 +5,7 @@ CREATE TABLE `User` (
     `username` VARCHAR(191) NULL,
     `email` VARCHAR(191) NULL,
     `emailVerified` DATETIME(3) NULL,
+    `hashedPassword` VARCHAR(191) NULL,
     `image` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -37,11 +29,7 @@ CREATE TABLE `Account` (
     `scope` VARCHAR(191) NULL,
     `id_token` TEXT NULL,
     `session_state` VARCHAR(191) NULL,
-    `refresh_token_expires_in` INTEGER NULL,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `Account_userId_key`(`userId`),
     INDEX `Account_userId_idx`(`userId`),
     UNIQUE INDEX `Account_provider_providerAccountId_key`(`provider`, `providerAccountId`),
     PRIMARY KEY (`id`)
@@ -53,8 +41,6 @@ CREATE TABLE `Session` (
     `sessionToken` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
     `expires` DATETIME(3) NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Session_sessionToken_key`(`sessionToken`),
     INDEX `Session_userId_idx`(`userId`),
@@ -67,6 +53,7 @@ CREATE TABLE `VerificationToken` (
     `token` VARCHAR(191) NOT NULL,
     `expires` DATETIME(3) NOT NULL,
 
+    UNIQUE INDEX `VerificationToken_token_key`(`token`),
     UNIQUE INDEX `VerificationToken_identifier_token_key`(`identifier`, `token`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -85,17 +72,17 @@ CREATE TABLE `Authenticator` (
     PRIMARY KEY (`userId`, `credentialID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- CreateIndex
-CREATE INDEX `Issue_userId_idx` ON `Issue`(`userId`);
+-- CreateTable
+CREATE TABLE `Issue` (
+    `id` VARCHAR(191) NOT NULL,
+    `title` VARCHAR(255) NOT NULL,
+    `description` TEXT NOT NULL,
+    `status` ENUM('OPEN', 'IN_PROGRESS', 'CLOSED') NOT NULL DEFAULT 'OPEN',
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `userId` VARCHAR(191) NOT NULL,
+    `assignedToUserId` VARCHAR(191) NULL,
 
--- AddForeignKey
-ALTER TABLE `Account` ADD CONSTRAINT `Account_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Session` ADD CONSTRAINT `Session_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Authenticator` ADD CONSTRAINT `Authenticator_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Issue` ADD CONSTRAINT `Issue_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+    INDEX `Issue_userId_idx`(`userId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
