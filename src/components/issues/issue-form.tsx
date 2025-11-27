@@ -6,9 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Issue } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
-import SimpleMDE from 'react-simplemde-editor';
 import { toast } from 'sonner';
 import Error from '../shared/error';
 import Spinner from '../shared/spinner';
@@ -22,6 +21,11 @@ import {
   FormMessage,
 } from '../ui/form';
 import { Input } from '../ui/input';
+import dynamic from 'next/dynamic';
+
+const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
+  ssr: false,
+});
 
 export default function IssueForm({ issue }: { issue?: Issue }) {
   const isEditing = !!issue;

@@ -2,6 +2,11 @@ import IssueChart from '@/components/issues/issue-chart';
 import IssueSummary from '@/components/issues/issue-summary';
 import LatestIssues from '@/components/issues/latest-issues';
 import { getAllIssues } from '@/lib/db/issues';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  description: 'View a summary of project issues.',
+};
 
 export default async function Home() {
   const openIssues = await getAllIssues({ where: { status: 'OPEN' } });

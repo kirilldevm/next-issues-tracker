@@ -17,7 +17,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Issue Tracker',
+  title: {
+    default: 'Issue Tracker',
+    template: '%s | Issue Tracker',
+  },
   description: 'issue tracker helps you manage your issues.',
 };
 

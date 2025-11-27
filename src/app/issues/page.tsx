@@ -5,6 +5,7 @@ import { SORTABLE_FIELDS } from '@/configs/issues.config';
 import { PAGE_SIZE } from '@/constants';
 import { getAllIssues } from '@/lib/db/issues';
 import { Issue, Status } from '@prisma/client';
+import { Metadata } from 'next';
 
 type Props = {
   searchParams: Promise<{
@@ -13,6 +14,10 @@ type Props = {
     sort: keyof Issue;
     page: string;
   }>;
+};
+
+export const metadata: Metadata = {
+  title: 'Issues',
 };
 
 export default async function IssuesPage({ searchParams }: Props) {

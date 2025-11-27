@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { prisma } from '../prisma';
 import { DefaultArgs } from '@prisma/client/runtime/library';
+import { cache } from 'react';
 
 export async function getAllIssues(
   query?: Prisma.IssueFindManyArgs<DefaultArgs>
@@ -17,8 +18,8 @@ export async function getAllIssuesId() {
   });
 }
 
-export async function getIssueById(id: string) {
+export const getIssueById = cache(async function getIssueById(id: string) {
   return prisma.issue.findUnique({
     where: { id },
   });
-}
+});

@@ -9,7 +9,9 @@ import { Button } from '../ui/button';
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
@@ -52,12 +54,15 @@ export default function AssigneeSelect({ issue }: { issue: Issue }) {
         <SelectValue placeholder='Select an user' />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value={'none'}>None</SelectItem>
-        {users?.map((user) => (
-          <SelectItem key={user.id} value={user.id}>
-            {user.name || user.email}
-          </SelectItem>
-        ))}
+        <SelectGroup>
+          <SelectLabel>Assign User</SelectLabel>
+          <SelectItem value={'none'}>None</SelectItem>
+          {users?.map((user) => (
+            <SelectItem key={user.id} value={user.id}>
+              {user.name || user.email}
+            </SelectItem>
+          ))}
+        </SelectGroup>
       </SelectContent>
     </Select>
   );
