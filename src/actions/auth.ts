@@ -62,7 +62,13 @@ export async function signUpAction(data: TRegisterSchema) {
     };
   }
 
-  const { name, email, password } = validatedValues.data;
+  const { email, password, confirmPassword } = validatedValues.data;
+
+  if (password !== confirmPassword) {
+    return {
+      error: 'Passwords do not match',
+    };
+  }
 
   const existingUser = await prisma.user.findUnique({
     where: {
@@ -80,7 +86,6 @@ export async function signUpAction(data: TRegisterSchema) {
 
   const user = await prisma.user.create({
     data: {
-      name,
       email,
       hashedPassword,
     },
