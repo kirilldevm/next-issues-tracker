@@ -12,34 +12,33 @@ import { PAGES } from './configs/pages.config';
 const { auth } = NextAuth(authConfig);
 
 export const middleware = auth(async (req) => {
-  const { nextUrl } = req;
+  const url = req.nextUrl;
+  const pathname = url.pathname;
   const isLoggedIn = !!req.auth;
 
-  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
-  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+  const isApiAuthRoute = pathname.startsWith(apiAuthPrefix);
+  const isAuthRoute = authRoutes.includes(pathname);
+  const isPublicRoute = publicRoutes.includes(pathname);
 
-  if (isApiAuthRoute) return null;
+  if (isApiAuthRoute) return NextResponse.next();
 
-  if (isAuthRoute) {
-    if (isLoggedIn) {
-      return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.url));
-    }
-    return null;
+  // logged in and tries to visit /signin or /signup → redirect
+  if (isAuthRoute && isLoggedIn) {
+    const redirectUrl = `${url.origin}${DEFAULT_LOGIN_REDIRECT}`;
+    return NextResponse.redirect(redirectUrl);
   }
 
+  // not logged in and trying to access a protected route
   if (!isLoggedIn && !isPublicRoute) {
-    let callbackUrl = nextUrl.pathname;
-    if (nextUrl.search) callbackUrl += nextUrl.search;
+    const callbackUrl = url.pathname + url.search;
+    const redirectUrl = `${url.origin}${
+      PAGES.SIGN_IN
+    }?callbackUrl=${encodeURIComponent(callbackUrl)}`;
 
-    const encodedCallbackUrl = encodeURIComponent(callbackUrl);
-
-    return NextResponse.redirect(
-      new URL(`${PAGES.SIGN_IN}?callbackUrl=${encodedCallbackUrl}`, req.url)
-    );
+    return NextResponse.redirect(redirectUrl);
   }
 
-  return null;
+  return NextResponse.next();
 });
 
 export const config = {
