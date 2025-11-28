@@ -25,7 +25,9 @@ export const middleware = auth(async (req) => {
 
   if (isAuthRoute) {
     if (isLoggedIn) {
-      return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+      return NextResponse.redirect(
+        new URL(DEFAULT_LOGIN_REDIRECT, nextUrl.origin)
+      );
     } else {
       return null;
     }
@@ -42,7 +44,10 @@ export const middleware = auth(async (req) => {
     const encodedCallbackUrl = encodeURIComponent(callbackUrl);
 
     return NextResponse.redirect(
-      new URL(`${PAGES.SIGN_IN}?callbackUrl=${encodedCallbackUrl}`, nextUrl)
+      new URL(
+        `${PAGES.SIGN_IN}?callbackUrl=${encodedCallbackUrl}`,
+        nextUrl.origin
+      )
     );
   }
 
