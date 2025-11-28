@@ -5,7 +5,12 @@ import { PAGES } from './configs/pages.config';
  * These routes don't require authentication
  * @type {string[]}
  */
-export const publicRoutes = [PAGES.HOME, PAGES.ISSUES, PAGES.HOME];
+export const publicRoutes = [
+  PAGES.HOME,
+  PAGES.ISSUES,
+  PAGES.SIGN_IN,
+  PAGES.SIGN_UP,
+];
 
 /**
  * An Array of routes that are used for authentication
