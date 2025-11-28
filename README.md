@@ -46,11 +46,6 @@ Before running the app, create a .env.local file in the root directory and confi
 
 ```
 DATABASE_URL=your_db_url
-DATABASE_USER=root
-DATABASE_PASSWORD=
-DATABASE_NAME=
-DATABASE_HOST=
-DATABASE_PORT=
 
 # Auth
 AUTH_SECRET=your_auth_secret

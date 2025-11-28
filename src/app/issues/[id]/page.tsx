@@ -1,17 +1,28 @@
 import { auth } from '@/auth';
 import IssueDetails from '@/components/issues/issue-details';
 import IssueDetailsTools from '@/components/issues/issue-details-tools';
-import { getAllIssuesId, getIssueById } from '@/lib/db/issues';
+import { getIssueById } from '@/lib/db/issues';
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 type Props = {
   params: Promise<{ id: string }>;
 };
 
-export async function generateStaticParams() {
-  const issues = await getAllIssuesId();
+export const dynamic = 'force-dynamic';
 
-  return issues.map((issue) => ({ id: issue.id }));
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+  const issue = await getIssueById(id);
+
+  if (!issue) {
+    return {};
+  }
+
+  return {
+    title: `Issue - ${issue.title}`,
+    description: `Details and status for issue: ${issue.title}. Status: ${issue.status}`,
+  };
 }
 
 export default async function Page({ params }: Props) {
