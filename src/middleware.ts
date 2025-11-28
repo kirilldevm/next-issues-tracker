@@ -19,35 +19,44 @@ export const middleware = auth(async (req) => {
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-  if (isApiAuthRoute) {
-    return null;
-  }
+  if (isApiAuthRoute) return null;
+
+  const safeNewUrl = (pathOrUrl: string) => {
+    try {
+      return new URL(pathOrUrl, nextUrl.origin || req.url);
+    } catch (err) {
+      // last resort: build from Host header
+      const host =
+        req.headers.get('host') || (nextUrl && nextUrl.hostname) || '';
+      const proto = req.headers.get('x-forwarded-proto') || 'https';
+      try {
+        return new URL(pathOrUrl, `${proto}://${host}`);
+      } catch (err2) {
+        // give up — return null so caller can handle
+        return null;
+      }
+    }
+  };
 
   if (isAuthRoute) {
     if (isLoggedIn) {
-      return NextResponse.redirect(
-        new URL(DEFAULT_LOGIN_REDIRECT, nextUrl.origin)
-      );
-    } else {
-      return null;
+      const target = safeNewUrl(DEFAULT_LOGIN_REDIRECT);
+      if (target) return NextResponse.redirect(target);
+      return NextResponse.redirect('/');
     }
+    return null;
   }
 
   if (!isLoggedIn && !isPublicRoute) {
-    // Save the redirect Url after login
     let callbackUrl = nextUrl.pathname;
-
-    if (nextUrl.search) {
-      callbackUrl += nextUrl.search;
-    }
-
+    if (nextUrl.search) callbackUrl += nextUrl.search;
     const encodedCallbackUrl = encodeURIComponent(callbackUrl);
 
+    const signInUrlStr = `${PAGES.SIGN_IN}?callbackUrl=${encodedCallbackUrl}`;
+    const target = safeNewUrl(signInUrlStr);
+    if (target) return NextResponse.redirect(target);
     return NextResponse.redirect(
-      new URL(
-        `${PAGES.SIGN_IN}?callbackUrl=${encodedCallbackUrl}`,
-        nextUrl.origin
-      )
+      `${PAGES.SIGN_IN}?callbackUrl=${encodedCallbackUrl}`
     );
   }
 
