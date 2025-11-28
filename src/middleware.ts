@@ -24,18 +24,16 @@ export const middleware = auth(async (req) => {
 
   // logged in and tries to visit /signin or /signup → redirect
   if (isAuthRoute && isLoggedIn) {
-    const redirectUrl = `${url.origin}${DEFAULT_LOGIN_REDIRECT}`;
+    const redirectUrl = new URL(DEFAULT_LOGIN_REDIRECT, url);
     return NextResponse.redirect(redirectUrl);
   }
 
   // not logged in and trying to access a protected route
   if (!isLoggedIn && !isPublicRoute) {
     const callbackUrl = url.pathname + url.search;
-    const redirectUrl = `${url.origin}${
-      PAGES.SIGN_IN
-    }?callbackUrl=${encodeURIComponent(callbackUrl)}`;
-
-    return NextResponse.redirect(redirectUrl);
+    const signInUrl = new URL(PAGES.SIGN_IN, url);
+    signInUrl.searchParams.set('callbackUrl', encodeURIComponent(callbackUrl));
+    return NextResponse.redirect(signInUrl);
   }
 
   return NextResponse.next();
