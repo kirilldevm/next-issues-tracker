@@ -113,8 +113,7 @@ export async function updateIssue({
       data: {
         title,
         description,
-        assignedToUserId:
-          assignedToUserId || issueExists.assignedToUserId || null,
+        assignedToUserId,
         status: status || issueExists.status,
       },
     });
