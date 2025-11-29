@@ -20,16 +20,19 @@ import { PAGES } from '@/configs/pages.config';
 import { SOCIALS } from '@/configs/socials.config';
 import { registerSchema, TRegisterSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import Error from '../shared/error';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
+import { useRouter } from 'next/navigation';
 
 export default function SignupForm() {
   const [isPending, startTransition] = useTransition();
+  const { update } = useSession();
+  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const form = useForm<TRegisterSchema>({
     resolver: zodResolver(registerSchema),
@@ -47,6 +50,10 @@ export default function SignupForm() {
         if (res?.error) {
           setError(res.error);
           toast.error(res.error);
+        } else if (res?.success) {
+          toast.success('Signed up successfully');
+          update(res.success.user);
+          router.push(PAGES.ISSUES);
         }
       });
     });

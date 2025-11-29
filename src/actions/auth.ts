@@ -1,7 +1,6 @@
 'use server';
 
 import { signIn } from '@/auth';
-import { PAGES } from '@/configs/pages.config';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 import {
@@ -48,9 +47,17 @@ export async function signInAction(data: TLoginSchema) {
     await signIn('credentials', {
       email,
       password,
-      redirectTo: PAGES.HOME,
+      redirect: false,
     });
+
+    return {
+      success: { user },
+    };
   }
+
+  return {
+    error: 'Invalid credentials',
+  };
 }
 
 export async function signUpAction(data: TRegisterSchema) {
@@ -62,7 +69,7 @@ export async function signUpAction(data: TRegisterSchema) {
     };
   }
 
-  const { email, password, confirmPassword } = validatedValues.data;
+  const { email, password, confirmPassword } = data;
 
   if (password !== confirmPassword) {
     return {
@@ -100,6 +107,10 @@ export async function signUpAction(data: TRegisterSchema) {
   await signIn('credentials', {
     email,
     password,
-    redirectTo: PAGES.HOME,
+    redirect: false,
   });
+
+  return {
+    success: { user },
+  };
 }

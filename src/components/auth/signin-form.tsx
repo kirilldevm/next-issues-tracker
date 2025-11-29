@@ -20,16 +20,19 @@ import { PAGES } from '@/configs/pages.config';
 import { SOCIALS } from '@/configs/socials.config';
 import { loginSchema, TLoginSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import Error from '../shared/error';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
+import { useRouter } from 'next/navigation';
 
 export default function SigninForm() {
   const [isPending, startTransition] = useTransition();
+  const { update } = useSession();
+  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const form = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),
@@ -42,12 +45,26 @@ export default function SigninForm() {
   function handleSubmit(data: TLoginSchema) {
     startTransition(async () => {
       setError(null);
-      await signInAction(data).then((res) => {
-        if (res?.error) {
-          setError(res.error);
-          toast.error(res.error);
+      try {
+        const res = await signInAction(data);
+
+        const { error, success } = res;
+
+        if (error) {
+          setError(error);
+          toast.error(error);
+          return;
         }
-      });
+
+        if (success) {
+          toast.success('Signed in successfully');
+          update();
+          router.push(PAGES.ISSUES);
+        }
+      } catch {
+        setError('Something went wrong');
+        toast.error('Something went wrong');
+      }
     });
   }
 

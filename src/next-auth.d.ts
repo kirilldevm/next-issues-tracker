@@ -3,8 +3,6 @@ import { type DefaultSession } from 'next-auth';
 declare module 'next-auth' {
   interface User {
     id: string;
-    isOAuth: boolean;
-    noPassword: boolean;
   }
 
   interface Session {
@@ -24,13 +22,11 @@ declare module 'next-auth' {
   }
 }
 
-import 'next-auth/jwt';
+// import 'next-auth/jwt';
 
-declare module 'next-auth/jwt' {
-  /** Returned by the `jwt` callback and `auth`, when using JWT sessions */
-  interface JWT {
-    /** OpenID ID Token */
-    isOAuth?: boolean;
-    noPassword: boolean;
-  }
-}
+// declare module 'next-auth/jwt' {
+//   /** Returned by the `jwt` callback and `auth`, when using JWT sessions */
+//   interface JWT {
+//     /** OpenID ID Token */
+//   }
+// }

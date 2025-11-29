@@ -5,7 +5,7 @@ import { AvatarImage } from '@radix-ui/react-avatar';
 import classNames from 'classnames';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { AiFillBug } from 'react-icons/ai';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import {
@@ -15,7 +15,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import { useEffect } from 'react';
+import { Skeleton } from './ui/skeleton';
 
 const links = [
   { name: 'Home', href: PAGES.HOME },
@@ -25,16 +25,15 @@ const links = [
 export default function Navbar() {
   const pathname = usePathname();
   const { status, data: session, update } = useSession();
+  const router = useRouter();
 
   async function handleGetOut() {
     await signOut({
-      redirectTo: PAGES.SIGN_IN,
+      redirect: false,
     });
-  }
-
-  useEffect(() => {
     update();
-  }, [pathname]);
+    router.push(PAGES.SIGN_IN);
+  }
 
   return (
     <nav className='border-b border-border py-4'>
@@ -61,6 +60,12 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
+
+          {status === 'loading' && (
+            <Avatar className='cursor-pointer'>
+              <Skeleton className='h-8 w-8' />
+            </Avatar>
+          )}
 
           {status === 'unauthenticated' && (
             <div className='flex gap-2'>

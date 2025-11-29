@@ -40,7 +40,7 @@ export default function RootLayout({
               <QueryProvider>
                 <ThemeProvider attribute='class' defaultTheme='system'>
                   <Toaster richColors position='bottom-right' />
-                  <Navbar />
+                    <Navbar />
                   <main className='container mx-auto flex-1 py-6'>
                     {children}
                   </main>

@@ -78,7 +78,7 @@ export async function updateIssue({
       };
     }
 
-    const { title, description, assignedToUserId, status } = validated.data;
+    const { title, description, assignedToUserId, status } = values;
 
     if (assignedToUserId) {
       const assignedToUser = await prisma.user.findUnique({
@@ -113,8 +113,9 @@ export async function updateIssue({
       data: {
         title,
         description,
-        assignedToUserId,
-        status,
+        assignedToUserId:
+          assignedToUserId || issueExists.assignedToUserId || null,
+        status: status || issueExists.status,
       },
     });
 
